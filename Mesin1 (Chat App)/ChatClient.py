@@ -4,7 +4,7 @@ import base64
 import json
 import os
 from chat import Chat
-TARGET_IP = "172.16.16.101" # mesin 1
+TARGET_IP = "172.31.83.217" # mesin 1
 TARGET_PORT = 8889
 
 class ChatClient:
@@ -53,6 +53,26 @@ class ChatClient:
                 groupname = j[1].strip()
                 filepath = j[2].strip()
                 return self.send_group_file(groupname,filepath)
+            elif command == "addrealm":
+                realmid = j[1].strip()
+                realm_address = j[2].strip()
+                realm_port = j[3].strip()
+                return self.add_realm(realmid, realm_address, realm_port)
+
+            elif command == "sendgrouprealm":
+                realmid = j[1].strip()
+                groupname = j[2].strip()
+                message = ""
+                for w in j[3:]:
+                    message = "{} {}".format(message, w)
+                return self.send_group_realm_message(realmid, groupname, message)
+            
+            elif command == "sendgroupfilerealm":
+                realmid = j[1].strip()
+                usernamesto = j[2].strip()
+                filepath = j[3].strip()
+                return self.send_group_file_realm(realmid, usernamesto, filepath)
+
             elif (command=='inbox'):
                 return self.inbox()
             elif (command=='logout'):
@@ -178,8 +198,53 @@ class ChatClient:
             return "{}" . format(json.dumps(result['messages']))
         else:
             return "Error, {}" . format(result['message'])
+        
+    def add_realm(self, realmid, realm_address, realm_port):
+        if self.tokenid == "":
+            return "Error, not authorized"
+        string = "addrealm {} {} {} \r\n".format(realmid, realm_address, realm_port)
+        result = self.sendstring(string)
+        if result["status"] == "OK":
+            return "Realm {} added".format(realmid)
+        else:
+            return "Error, {}".format(result["message"])
+        
     
-    def logout(self):
+    def send_group_realm_message(self, realmid, usernames_to, message):
+        if self.tokenid == "":
+            return "Error, not authorized"
+        string = "sendgrouprealm {} {} {} {} \r\n".format(
+            self.tokenid, realmid, usernames_to, message
+        )
+
+        result = self.sendstring(string)
+        if result["status"] == "OK":
+            return "message sent to group {} in realm {}".format(usernames_to, realmid)
+        else:
+            return "Error {}".format(result["message"])
+        
+    def send_group_file_realm(self, realmid, usernames_to, filepath):
+        if self.tokenid == "":
+            return "Error, not authorized"
+
+        if not os.path.exists(filepath):
+            return {"status": "ERROR", "message": "File not found"}
+
+        with open(filepath, "rb") as file:
+            file_content = file.read()
+            encoded_content = base64.b64encode(
+                file_content
+            )  # Decode byte-string to UTF-8 string
+        string = "sendgroupfilerealm {} {} {} {} {}\r\n".format(
+            self.tokenid, realmid, usernames_to, filepath, encoded_content
+        )
+        result = self.sendstring(string)
+        if result["status"] == "OK":
+            return "file sent to group {} in realm {}".format(usernames_to, realmid)
+        else:
+            return "Error {}".format(result["message"])
+
+    def logout(self):   
         string="logout {}\r\n".format(self.tokenid)
         result = self.sendstring(string)
         if result['status']=='OK':
@@ -199,6 +264,19 @@ class ChatClient:
 if __name__=="__main__":
     cc = ChatClient()
     c = Chat()
+
+    # cc = ChatClient()
+    # cc.proses("auth messi surabaya")
+    # cc.proses("addrealm realm2 172.31.83.217 8890")
+    # cc.proses("sendgroupfilerealm realm2 group:home file.txt")
+
+    cc.proses("auth henderson surabaya")
+    cc.proses("addgroup home")
+    cc.proses("logout")
+    cc.proses("auth lineker surabaya")
+    cc.proses("joingroup home")
+
+
     while True:
         print("\n")
         print("List User: " + str(c.users.keys()) + " dan Passwordnya: " + str(c.users['messi']['password']) + ", " + str(c.users['henderson']['password']) + ", " + str(c.users['lineker']['password']))
@@ -217,6 +295,10 @@ if __name__=="__main__":
         11. Melihat user yang aktif: info\n
 
         Command MultiRealm Server:\n\n
+        12. Menambah realm: addrealm [nama_realm] [address] [port]\n
+        13. Mengirim pesan ke realm: sendprivaterealm [name_realm] [username to] [message]\n
+        14. Mengirim pesan ke group realm: sendgrouprealm [name_realm] [usernames to]/[group:][group_name] [message]\n
+        15. Melihat pesan realm: getrealminbox [nama_realm]\n
         """)
         cmdline = input("Command {}:" . format(cc.tokenid))
         print(cc.proses(cmdline))
