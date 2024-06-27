@@ -4,7 +4,7 @@ import base64
 import json
 import os
 from chat import Chat
-TARGET_IP = "172.31.83.217" # mesin 1
+TARGET_IP = "172.16.16.101" # mesin 1
 TARGET_PORT = 8889
 
 class ChatClient:
@@ -72,6 +72,26 @@ class ChatClient:
                 usernamesto = j[2].strip()
                 filepath = j[3].strip()
                 return self.send_group_file_realm(realmid, usernamesto, filepath)
+
+            #duevano start
+            elif command == "sendprivaterealm":
+                realmid = j[1].strip()
+                username_to = j[2].strip()
+                message = ""
+                for w in j[3:]:
+                    message = "{} {}".format(message, w)
+                return self.send_realm_message(realmid, username_to, message)
+
+            elif command == "sendfilerealm":
+                realmid = j[1].strip()
+                usernameto = j[2].strip()
+                filepath = j[3].strip()
+                return self.send_file_realm(realmid, usernameto, filepath)
+
+            elif command == "getrealminbox":
+                realmid = j[1].strip()
+                return self.realm_inbox(realmid)
+            #duevano end
 
             elif (command=='inbox'):
                 return self.inbox()
@@ -244,6 +264,54 @@ class ChatClient:
         else:
             return "Error {}".format(result["message"])
 
+    # duevano start
+    def send_realm_message(self, realmid, username_to, message):
+        if self.tokenid == "":
+            return "Error, not authorized"
+        string = "sendprivaterealm {} {} {} {}\r\n".format(
+            self.tokenid, realmid, username_to, message
+        )
+        result = self.sendstring(string)
+        if result["status"] == "OK":
+            return "Message sent to realm {}".format(realmid)
+        else:
+            return "Error, {}".format(result["message"])
+
+    def send_file_realm(self, realmid, usernameto, filepath):
+        if self.tokenid == "":
+            return "Error, not authorized"
+        if not os.path.exists(filepath):
+            return {"status": "ERROR", "message": "File not found"}
+
+        with open(filepath, "rb") as file:
+            file_content = file.read()
+            encoded_content = base64.b64encode(
+                file_content
+            )  # Decode byte-string to UTF-8 string
+        string = "sendfilerealm {} {} {} {} {}\r\n".format(
+            self.tokenid, realmid, usernameto, filepath, encoded_content
+        )
+        result = self.sendstring(string)
+        if result["status"] == "OK":
+            return "File sent to realm {}".format(realmid)
+        else:
+            return "Error, {}".format(result["message"])
+
+    def realm_inbox(self, realmid):
+        if self.tokenid == "":
+            return "Error, not authorized"
+        string = "getrealminbox {} {} \r\n".format(self.tokenid, realmid)
+        print("Sending: " + string)
+        result = self.sendstring(string)
+        print("Received: " + str(result))
+        if result["status"] == "OK":
+            return "Message received from realm {}: {}".format(
+                realmid, result["messages"]
+            )
+        else:
+            return "Error, {}".format(result["message"])
+    #duevano end
+
     def logout(self):   
         string="logout {}\r\n".format(self.tokenid)
         result = self.sendstring(string)
@@ -270,11 +338,11 @@ if __name__=="__main__":
     # cc.proses("addrealm realm2 172.31.83.217 8890")
     # cc.proses("sendgroupfilerealm realm2 group:home file.txt")
 
-    cc.proses("auth henderson surabaya")
-    cc.proses("addgroup home")
-    cc.proses("logout")
-    cc.proses("auth lineker surabaya")
-    cc.proses("joingroup home")
+    # cc.proses("auth henderson surabaya")
+    # cc.proses("addgroup home")
+    # cc.proses("logout")
+    # cc.proses("auth lineker surabaya")
+    # cc.proses("joingroup home")
 
 
     while True:
@@ -287,7 +355,7 @@ if __name__=="__main__":
         3. Buat group: addgroup [nama_group]\n
         4. Join group: joingroup [nama_group]\n
         5. Mengirim pesan private: send [username to] [message]\n
-        6. Mengirim file private: senfile [username to] [filename]\n
+        6. Mengirim file private: sendfile [username to] [filename]\n
         7. Mengirim pesan ke group: sendgroup [nama_group] [message]\n
         8. Mengirim file ke group: sendgroupfile [usernames to] [filename]\n
         9. Melihat pesan: inbox\n
@@ -299,6 +367,8 @@ if __name__=="__main__":
         13. Mengirim pesan ke realm: sendprivaterealm [name_realm] [username to] [message]\n
         14. Mengirim pesan ke group realm: sendgrouprealm [name_realm] [usernames to]/[group:][group_name] [message]\n
         15. Melihat pesan realm: getrealminbox [nama_realm]\n
+        16. Mengirim file ke realm: sendfilerealm [name_realm] [username to] [filename]\n
+        17. Mengirim file ke group realm: sendgroupfilerealm [name_realm] [usernames to] [filename]\n
         """)
         cmdline = input("Command {}:" . format(cc.tokenid))
         print(cc.proses(cmdline))
