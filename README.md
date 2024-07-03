@@ -117,7 +117,7 @@ Port Destination  : 8890
 ![First](Image/SendMessageToJarkom3.jpg)
 
 - ### Proses File Messaging (Ke Rian)
-![First](Image/SendMessageToRian.png)
+![First](Image/SendFileToRian.png)
 
 - ### Proses File Messaging (Ke Jarkom)
 ![First](Image/SendMessageToJarkom.png)
