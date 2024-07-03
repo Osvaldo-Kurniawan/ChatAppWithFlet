@@ -89,4 +89,46 @@ Port Destination  : 8890
 
 ### Dokumentasi with UI
 
+- ### Tampilan HomeScreen
+![First](Image/HomeScreen.png)
+
+- ### Tampilan Login
+![First](Image/Login.png)
+
+- ### Tampilan Register
+![First](Image/Register.png)
+
+- ### Tampilan Info User Tersedia
+![First](Image/InfoUser.png)
+
+- ### Proses Create Group 
+![First](Image/JoinGroup.jpg)
+
+- ### Proses Private Messaging (Ke Messi)
+![First](Image/SendMessageToMessi.png)
+
+- ### Proses Private Messaging (Ke Kevin)
+![First](Image/SendMessageToKevin.jpg)
+
+- ### Proses Group Messaging (Ke Jarkom)
+![First](Image/SendMessageToJarkom.png)
+
+- ### Proses Group Messaging (Ke Jarkom3)
+![First](Image/SendMessageToJarkom3.jpg)
+
+- ### Proses File Messaging (Ke Rian)
+![First](Image/SendMessageToRian.png)
+
+- ### Proses File Messaging (Ke Jarkom)
+![First](Image/SendMessageToJarkom.png)
+
+- ### Hasil Chat Client
+![First](Image/ChatClient.png)
+
+- ### Hasil Chat Client 2
+![First](Image/ChatClient2.png)
+
+- ### Hasil Chat Server
+![First](Image/ChatServer.png)
+
 
