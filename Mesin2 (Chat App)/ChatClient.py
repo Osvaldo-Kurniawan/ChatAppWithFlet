@@ -4,8 +4,8 @@ import base64
 import json
 import os
 from chat import Chat
-TARGET_IP = "172.16.16.102" # mesin 2
-TARGET_PORT = 8890
+TARGET_IP = "172.16.16.102" # mesin2 | SESUAIKAN IP DAHULU
+TARGET_PORT = 8890 # mesin2 | SESUAIKAN PORT DAHULU
 
 class ChatClient:
     def __init__(self):
