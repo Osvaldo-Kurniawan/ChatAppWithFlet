@@ -11,6 +11,7 @@
 | 5   | Aryasatya Wiryawan                 | 5025221256   | Documentation and Testing & deployment |
 | 6   | Muhammad febriansyah               | 5025211164   | Documentation and testing & deployment |
 
+## Komponen Utama 
 
 ### Server Mesin1
 Lokasi Port      : 8889
