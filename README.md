@@ -136,7 +136,16 @@ Port Destination  : 8890
 - ### Hasil Chat Client 2
 ![First](Image/ChatClient2.png)
 
-- ### Hasil Chat Server
-![First](Image/ChatServer.png)
+- ### Hasil Add Realm
+![First](Image/AddRealm.png)
+
+- ### Hasil Chat Realm Mesin1
+![First](Image/MessageRealm.png)
+
+- ### Hasil Chat Realm Mesin2
+![First](Image/MessageRealm2.png)
+
+- ### Hasil Chat FileRealm
+![First](Image/FileRealm.png)
 
 
