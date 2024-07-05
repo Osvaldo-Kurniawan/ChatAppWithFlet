@@ -11,7 +11,6 @@
 | 5   | Aryasatya Wiryawan                 | 5025221256   | Documentation and Testing & deployment |
 | 6   | Muhammad febriansyah               | 5025211164   | Documentation and testing & deployment |
 
-## Protokol
 
 ### Server Mesin1
 Lokasi Port      : 8889
@@ -29,7 +28,7 @@ Lokasi Program   : .ChatAppWithFlet/Mesin1 (Chat App)/ChatServer.py
 Ip Destination    : 172.16.16.102
 Port Destination  : 8890
 
-## Client Command Prompt
+## Komunikasi dalam satu server
 
 1. Login: `auth [username] [password]` contoh `auth messi surabaya`
 
@@ -76,16 +75,24 @@ Port Destination  : 8890
 - home
 
 
-## Komunikasi dalam satu server
 ### Setup Preparation 
-- lakukan clone pada repository ini
-- dilanjutkan dengan masuk ke salah satu mesin yang ingin digunakan
-- jalankan server terlebih dahulu dengan perintah `python3 ChatServer.py`
-- buka diterminal lain dengan menjalankan `python3 ChatClient.py`
-- lalu buka terminal lagi untuk melakukan komunikasi dengan antar client dengan menjalankan `python3 ChatClient.py`
-- jika ingin mengggaplikasikan dalam mode UI yang lebih mudah dan menarik dapat di lakukan dengan menjalankan 'python3 flet-chat.py`
+- Buka terlebih dahulu localhost:6000x maupun localhost:5000x
+- Dilanjutkan dengan masuk ke salah satu mesin yang ingin digunakan (Bisa mesin1/mesin2/mesin3)
+- Lakukan clone repository ini ke dalam jupyter notebook (Disini menggunakan mesin1 = localhost:60001)
+- Buka repository dan jalankan server terlebih dahulu dengan perintah `python3 ChatServer.py`
+- Setelah server running, maka buka localhost:50001 lalu buka lxterminal
+- Arahkan ke direktori ChatAppWithFlet dengan menggunakan mesin yang sama 
+- Pastikan server sudah menyala dan running code `flet-dep.sh` menggunakan command `bash`.  
+- Lalu jalankan program `flet-chat.py` pada lxterminal 
+- Hasilnya akan muncul sebagai berikut 
+![First](Image/FletRunning.png)
+- Program sudah bisa digunakan 
 
-  note : dalam mode UI di gunakan `flet` sehinggga harus dilakukan instalasi terlebih dahulu lalu dilakukan instalasi kembali didalamnya dengan setup yang berbeda tergantung dari spesifikasi pada device
+  note 1: dalam mode UI di gunakan `flet` sehinggga harus dilakukan instalasi terlebih dahulu lalu dilakukan instalasi kembali didalamnya dengan setup yang berbeda tergantung dari spesifikasi pada device. Untuk menjalankan flet dalam lokal, bisa menggunakan command `pip install flet`
+
+  note 2: program yang digunakan, menggunakan docker yang disediakan oleh pak Roy
+
+
 
 ### Dokumentasi with UI
 
